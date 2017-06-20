@@ -35,6 +35,123 @@ queue_size: <%= @filebeat_config['queue_size'] %>
 max_procs: <%= @filebeat_config['max_procs'] %>
 <%- end -%>
 
+#==========================  Modules configuration ============================
+filebeat.modules:
+<%- if @filebeat_config['module']['system'] != nil %>
+- module: system
+  <%- if @filebeat_config['module']['system']['syslog'] != nil %>
+  syslog:
+    <%- if @filebeat_config['module']['system']['syslog']['enabled'] != nil %>
+    enabled: <%= @filebeat_config['module']['system']['syslog']['enabled'] %>
+    <%- end %>
+    <%- if @filebeat_config['module']['system']['syslog']['paths'] != nil %>
+    var.paths: [
+    <%- @filebeat_config['module']['system']['syslog']['paths'].each do |path| %>
+      "<%= path %>",
+    <%- end %>
+    ]
+    <%- end %>
+  <%- end %>
+<%- end %>
+<%- if @filebeat_config['module']['apache2'] != nil %>
+- module: apache2
+  <%- if @filebeat_config['module']['apache2']['access'] != nil %>
+  access:
+    <%- if @filebeat_config['module']['apache2']['access']['enabled'] != nil %>
+    enabled: <%= @filebeat_config['module']['apache2']['access']['enabled'] %>
+    <%- end %>
+    <%- if @filebeat_config['module']['apache2']['access']['pipeline'] != nil %>
+    var.pipeline: <%= @filebeat_config['module']['apache2']['access']['pipeline'] %>
+    <%- end %>
+    <%- if @filebeat_config['module']['apache2']['access']['paths'] != nil %>
+    var.paths: [
+    <%- @filebeat_config['module']['apache2']['access']['paths'].each do |path| %>
+      "<%= path %>",
+    <%- end %>
+    ]
+    <%- end %>
+  <%- end %>
+  <%- if @filebeat_config['module']['apache2']['error'] != nil %>
+  access:
+    <%- if @filebeat_config['module']['apache2']['error']['enabled'] != nil %>
+    enabled: <%= @filebeat_config['module']['apache2']['error']['enabled'] %>
+    <%- end %>
+    <%- if @filebeat_config['module']['apache2']['error']['paths'] != nil %>
+    var.paths: [
+    <%- @filebeat_config['module']['apache2']['error']['paths'].each do |path| %>
+      "<%= path %>",
+    <%- end %>
+    ]
+    <%- end %>
+  <%- end %>
+<%- end %>
+#------------------------------- Auditd Module -------------------------------
+#- module: auditd
+  #log:
+    #enabled: true
+
+    # Set custom paths for the log files. If left empty,
+    # Filebeat will choose the paths depending on your OS.
+    #var.paths:
+
+#-------------------------------- MySQL Module -------------------------------
+#- module: mysql
+  # Error logs
+  #error:
+    #enabled: true
+
+    # Set custom paths for the log files. If left empty,
+    # Filebeat will choose the paths depending on your OS.
+    #var.paths:
+
+    # Prospector configuration (advanced). Any prospector configuration option
+    # can be added under this section.
+    #prospector:
+
+  # Slow logs
+  #slowlog:
+    #enabled: true
+
+    # Set custom paths for the log files. If left empty,
+    # Filebeat will choose the paths depending on your OS.
+    #var.paths:
+
+    # Prospector configuration (advanced). Any prospector configuration option
+    # can be added under this section.
+    #prospector:
+
+#-------------------------------- Nginx Module -------------------------------
+#- module: nginx
+  # Access logs
+  #access:
+    #enabled: true
+
+    # Ingest Node pipeline to use. Options are `with_plugins` (default)
+    # and `no_plugins`. Use `no_plugins` if you don't have the geoip or
+    # the user agent Node ingest plugins installed.
+    #var.pipeline: with_plugins
+
+    # Set custom paths for the log files. If left empty,
+    # Filebeat will choose the paths depending on your OS.
+    #var.paths:
+
+    # Prospector configuration (advanced). Any prospector configuration option
+    # can be added under this section.
+    #prospector:
+
+  # Error logs
+  #error:
+    #enabled: true
+
+    # Set custom paths for the log files. If left empty,
+    # Filebeat will choose the paths depending on your OS.
+    #var.paths:
+
+    # Prospector configuration (advanced). Any prospector configuration option
+    # can be added under this section.
+    #prospector:
+
+
 #================================ Processors =====================================
 
 # Processors are used to reduce the number of fields in the exported event or to

@@ -65,6 +65,7 @@ class filebeat (
   $config_file_mode     = $filebeat::params::config_file_mode,
   $purge_conf_dir       = $filebeat::params::purge_conf_dir,
   $outputs              = $filebeat::params::outputs,
+  $modules              = $filebeat::params::modules,
   $shipper              = $filebeat::params::shipper,
   $logging              = $filebeat::params::logging,
   $run_options          = $filebeat::params::run_options,
