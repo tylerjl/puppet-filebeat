@@ -72,7 +72,7 @@ filebeat.modules:
     <%- end %>
   <%- end %>
   <%- if @filebeat_config['module']['apache2']['error'] != nil %>
-  access:
+  error:
     <%- if @filebeat_config['module']['apache2']['error']['enabled'] != nil %>
     enabled: <%= @filebeat_config['module']['apache2']['error']['enabled'] %>
     <%- end %>
@@ -85,72 +85,81 @@ filebeat.modules:
     <%- end %>
   <%- end %>
 <%- end %>
-#------------------------------- Auditd Module -------------------------------
-#- module: auditd
-  #log:
-    #enabled: true
+<%- if @filebeat_config['module']['auditd'] != nil %>
+- module: auditd
+  <%- if @filebeat_config['module']['auditd']['log'] != nil %>
+  log:
+    enabled: <%= @filebeat_config['module']['auditd']['log']['enabled']  %>
 
-    # Set custom paths for the log files. If left empty,
-    # Filebeat will choose the paths depending on your OS.
-    #var.paths:
-
-#-------------------------------- MySQL Module -------------------------------
-#- module: mysql
+    <%- if @filebeat_config['module']['auditd']['log']['paths'] != nil %>
+    var.paths: [
+    <%- @filebeat_config['module']['auditd']['log']['paths'].each do |path| %>
+      "<%= path %>",
+    <%- end %>
+    ]
+    <%- end %>
+  <%- end %>
+<%- end %>
+<%- if @filebeat_config['module']['mysql'] != nil %>
+- module: mysql
   # Error logs
-  #error:
-    #enabled: true
-
-    # Set custom paths for the log files. If left empty,
-    # Filebeat will choose the paths depending on your OS.
-    #var.paths:
-
-    # Prospector configuration (advanced). Any prospector configuration option
-    # can be added under this section.
-    #prospector:
-
-  # Slow logs
-  #slowlog:
-    #enabled: true
-
-    # Set custom paths for the log files. If left empty,
-    # Filebeat will choose the paths depending on your OS.
-    #var.paths:
-
-    # Prospector configuration (advanced). Any prospector configuration option
-    # can be added under this section.
-    #prospector:
-
-#-------------------------------- Nginx Module -------------------------------
-#- module: nginx
-  # Access logs
-  #access:
-    #enabled: true
-
-    # Ingest Node pipeline to use. Options are `with_plugins` (default)
-    # and `no_plugins`. Use `no_plugins` if you don't have the geoip or
-    # the user agent Node ingest plugins installed.
-    #var.pipeline: with_plugins
-
-    # Set custom paths for the log files. If left empty,
-    # Filebeat will choose the paths depending on your OS.
-    #var.paths:
-
-    # Prospector configuration (advanced). Any prospector configuration option
-    # can be added under this section.
-    #prospector:
-
-  # Error logs
-  #error:
-    #enabled: true
-
-    # Set custom paths for the log files. If left empty,
-    # Filebeat will choose the paths depending on your OS.
-    #var.paths:
-
-    # Prospector configuration (advanced). Any prospector configuration option
-    # can be added under this section.
-    #prospector:
-
+  <%- if @filebeat_config['module']['mysql']['error'] != nil %>
+  error:
+    <%- if @filebeat_config['module']['apache2']['error']['enabled'] != nil %>
+    enabled: <%= @filebeat_config['module']['apache2']['error']['enabled'] %>
+    <%- end %>
+    <%- if @filebeat_config['module']['apache2']['error']['paths'] != nil %>
+    var.paths: [
+    <%- @filebeat_config['module']['apache2']['error']['paths'].each do |path| %>
+      "<%= path %>",
+    <%- end %>
+    ]
+    <%- end %>
+  <%- end %>
+  <%- if @filebeat_config['module']['mysql']['slowlog'] != nil %>
+  slowlog:
+    <%- if @filebeat_config['module']['apache2']['slowlog']['enabled'] != nil %>
+    enabled: <%= @filebeat_config['module']['apache2']['slowlog']['enabled'] %>
+    <%- end %>
+    <%- if @filebeat_config['module']['apache2']['slowlog']['paths'] != nil %>
+    var.paths: [
+    <%- @filebeat_config['module']['apache2']['slowlog']['paths'].each do |path| %>
+      "<%= path %>",
+    <%- end %>
+    ]
+    <%- end %>
+  <%- end %>
+<%- end %>
+<%- if @filebeat_config['module']['nginx'] != nil %>
+- module: nginx
+  <%- if @filebeat_config['module']['nginx']['access'] != nil %>
+  access:
+    <%- if @filebeat_config['module']['nginx']['access']['enabled'] != nil %>
+    enabled: <%= @filebeat_config['module']['nginx']['access']['enabled'] %>
+    <%- end %>
+    <%- if @filebeat_config['module']['nginx']['access']['paths'] != nil %>
+    var.paths: [
+    <%- @filebeat_config['module']['nginx']['access']['paths'].each do |path| %>
+      "<%= path %>",
+    <%- end %>
+    ]
+    <%- end %>
+  <%- end %>
+  <%- if @filebeat_config['module']['nginx']['error'] != nil %>
+  error:
+    <%- if @filebeat_config['module']['nginx']['error']['enabled'] != nil %>
+    enabled: <%= @filebeat_config['module']['nginx']['error']['enabled'] %>
+    <%- end %>
+    <%- if @filebeat_config['module']['nginx']['error']['paths'] != nil %>
+    var.paths: [
+    <%- @filebeat_config['module']['nginx']['error']['paths'].each do |path| %>
+      "<%= path %>",
+    <%- end %>
+    ]
+    <%- end %>
+  <%- end %>
+<%- end %>
+<%- end %>
 
 #================================ Processors =====================================
 
